@@ -1,0 +1,24 @@
+{
+    "name": "patpat/dingding-for-laravel",
+    "description": "Notice information to DingDing",
+    "keywords": [
+        "DingDing"
+    ],
+    "homepage": "https://www.patpat.com",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bruce",
+            "email": "bruce.he@patpat.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+    },
+    "autoload": {
+        "psr-4": {
+            "PatPat\\DingDing\\": "src/"
+        }
+    }
+}
