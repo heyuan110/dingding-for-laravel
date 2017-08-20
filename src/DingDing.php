@@ -22,9 +22,9 @@ class DingDing
      * 
      * @param Repository $config
      */
-    public function __construct(Repository $config)
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = $this->app['config'];
     }
 
     /**
