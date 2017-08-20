@@ -6,25 +6,22 @@
  * Time: 03:59
  */
 namespace PatPat\DingDing;
-use Illuminate\Config\Repository;
+use Illuminate\Support\Facades\Config;
 
 class DingDing
 {
     const DingDing_URL='https://oapi.dingtalk.com/robot/send?access_token=';
 
     /**
-     * @var Repository
-     */
-    protected $config;
-
-    /**
+     * Create a new confide instance.
+     *
      * DingDing constructor.
-     * 
-     * @param Repository $config
+     *
+     * @return void
      */
     public function __construct()
     {
-        $this->config = $this->app['config'];
+
     }
 
     /**
@@ -36,7 +33,7 @@ class DingDing
     public function pushText($text)
     {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.$this->config->get('dingding.access_token'));
+        curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.Config::get('dingding.access_token'));
         $header = ['Content-Type:application/json'];
         curl_setopt ( $curl, CURLOPT_HTTPHEADER, $header );
         curl_setopt($curl, CURLOPT_HEADER, 0);  //设置头文件的信息作为数据流输出
