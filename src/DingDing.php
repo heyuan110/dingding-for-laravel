@@ -39,10 +39,8 @@ class DingDing
         curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.$this->config->get('dingding.access_token'));
         $header = array('Content-Type:application/json');
         curl_setopt ( $curl, CURLOPT_HTTPHEADER, $header );
-        //设置头文件的信息作为数据流输出
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        //设置获取的信息以文件流的形式返回，而不是直接输出。
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 0);  //设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  //设置获取的信息以文件流的形式返回，而不是直接输出。
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($this->TextData('test')));
         $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
