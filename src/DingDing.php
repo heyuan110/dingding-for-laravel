@@ -8,6 +8,16 @@
 namespace PatPat\DingDing;
 use Illuminate\Support\Facades\Config;
 
+class DingDingRobot
+{
+    //机器人群0，1，2，3，4，最多可以设置5个不同群
+    const R0 = 0;
+    const R1 = 1;
+    const R2 = 2;
+    const R3 = 3;
+    const R4 = 4;
+}
+
 class DingDing
 {
     const DingDing_URL='https://oapi.dingtalk.com/robot/send?access_token=';
@@ -21,7 +31,6 @@ class DingDing
      */
     public function __construct()
     {
-
     }
 
     /**
@@ -30,10 +39,28 @@ class DingDing
      * @param $text
      * @return array
      */
-    public function pushText($text)
+    public function pushText($text,$type=DingDingRobot::R0)
     {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.Config::get('dingding.access_token'));
+        $token = null;
+        switch ($type){
+            case DingDingRobot::R1:
+                $token = Config::get('dingding.access_token1');
+                break;
+            case DingDingRobot::R2:
+                $token = Config::get('dingding.access_token2');
+                break;
+            case DingDingRobot::R3:
+                $token = Config::get('dingding.access_token3');
+                break;
+            case DingDingRobot::R4:
+                $token = Config::get('dingding.access_token4');
+                break;
+        }
+        if($token == null || $token = ''){
+            $token = Config::get('dingding.access_token');
+        }
+        curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.$token);
         $header = ['Content-Type:application/json'];
         curl_setopt ( $curl, CURLOPT_HTTPHEADER, $header );
         curl_setopt($curl, CURLOPT_HEADER, 0);  //设置头文件的信息作为数据流输出

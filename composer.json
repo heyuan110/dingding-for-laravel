@@ -1,6 +1,6 @@
 {
     "name": "patpat/dingding-for-laravel",
-    "description": "Notice information to DingDing",
+    "description": "给钉钉机器人发消息",
     "keywords": [
         "DingDing"
     ],
