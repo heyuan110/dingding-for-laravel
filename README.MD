@@ -27,7 +27,11 @@ $dingDing->pushText('hello world!'，DingDingRobot::R3);
 $dingDing->pushText('hello world!'，DingDingRobot::R4);
 ```
 
+#### 升级注意事项
 
+如果你之前是1.0.3版本，升级到1.0.4版本后需要更新配置文件，提前备份好`config/dingding.php`文件，执行下面命令：
+
+`php artisan vendor:publish --provider="PatPat\DingDing\DingDingServiceProvider" --force`
 
 完成！
 
