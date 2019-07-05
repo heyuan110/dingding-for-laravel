@@ -57,7 +57,7 @@ class DingDing
                 $token = Config::get('dingding.access_token4');
                 break;
         }
-        if($token == null || $token = ''){
+        if($token == null || $token == ''){
             $token = Config::get('dingding.access_token');
         }
         curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.$token);
