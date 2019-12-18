@@ -34,6 +34,23 @@ class DingDing
     }
 
     /**
+     * 对加签安全设置的机器人发消息签名，规则：https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq
+     * @param $secret
+     * @return string
+     */
+    public function sign($secret){
+        if($secret == null || $secret == '') {
+            return '';
+        }
+        list($msec, $sec) = explode(' ', microtime());
+        $timestamp = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+        $string_to_sign = $timestamp . "\n"  . $secret;
+        $signature=hash_hmac('sha256',$string_to_sign,$secret,true);
+        $urlencode_signature = urlencode(base64_encode($signature));
+        return "timestamp=" . $timestamp . "&sign=" . $urlencode_signature;
+    }
+
+    /**
      * 推送文本消息到钉钉
      *
      * @param $text
@@ -43,24 +60,35 @@ class DingDing
     {
         $curl = curl_init();
         $token = null;
+        $secret = null;
         switch ($type){
             case DingDingRobot::R1:
+                $secret = Config::get('dingding.secret1');
                 $token = Config::get('dingding.access_token1');
                 break;
             case DingDingRobot::R2:
+                $secret = Config::get('dingding.secret2');
                 $token = Config::get('dingding.access_token2');
                 break;
             case DingDingRobot::R3:
+                $secret = Config::get('dingding.secret3');
                 $token = Config::get('dingding.access_token3');
                 break;
             case DingDingRobot::R4:
+                $secret = Config::get('dingding.secret4');
                 $token = Config::get('dingding.access_token4');
                 break;
         }
         if($token == null || $token == ''){
+            $secret = Config::get('dingding.secret');
             $token = Config::get('dingding.access_token');
         }
-        curl_setopt($curl, CURLOPT_URL,self::DingDing_URL.$token);
+        $url = self::DingDing_URL.$token;
+        $sign=$this->sign($secret);
+        if($sign != null && $sign != '') {
+            $url = $url . "&" . $sign;
+        }
+        curl_setopt($curl, CURLOPT_URL,$url);
         $header = ['Content-Type:application/json'];
         curl_setopt ( $curl, CURLOPT_HTTPHEADER, $header );
         curl_setopt($curl, CURLOPT_HEADER, 0);  //设置头文件的信息作为数据流输出
