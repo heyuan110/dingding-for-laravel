@@ -1,10 +1,12 @@
 给钉钉机器人发消息，最多可设置5个不同的机器人token，超简单！
 
-## 更新
+## 一、更新
 
-- 增加支持钉钉机器人加签的安全设置
+#### 1.0.6
 
-## 配置
+- 支持安全设置为加签的钉钉机器人发送消息
+
+## 二、配置
 
 钉钉机器人最新增加了安全设置，有三种方式：自定义关键词，加签，IP地址。
 
@@ -17,52 +19,75 @@
 
 **IP地址**：设定后，发送消息和原来相同，也没增加校验，只有来自IP地址范围内的请求才会被正常处理
 
-1. 配置access_token 和 secret
+#### 1. 引入包
+
+执行`composer require patpat/dingding-for-laravel`将包添加到项目。
+
+也可以打开composer.json文件手动添加`patpat/dingding-for-laravel`包，再`composer update`。
+
+#### 2. 拷贝配置文件
+
+执行`php artisan vendor:publish --provider="PatPat\DingDing\DingDingServiceProvider" --force`将dingding.php配置文件拷贝到项目config目录。
+
+#### 3. .env文件里配置DINGDING_TOKEN和DINGDING_SECRET
+
+如果项目里只有一个机器人发送消息，只需要配置默认token和secret
 
 ```
-;设置机器人access_token，需要发到几个群就设置几个token和secret
-DINGDING_TOKEN=xxxxxxxxxxxx
-DINGDING_SECRET=xxxxx
+DINGDING_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxx
+DINGDING_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx
+```
 
-DINGDING_TOKEN1=xxxxxxxxxxxx1
-DINGDING_SECRET1=xxxxx1
+如果项目里有多个机器人发送消息，可增加token和secret配置，最多支持5个。
 
-DINGDING_TOKEN2=xxxxxxxxxxxx2
-DINGDING_SECRET2=xxxxx2
+```
+#DINGDING_TOKEN1=xxxxxxxxxxxxxxxxxxxxxxx1
+#DINGDING_SECRET1=xxxxxxxxxxxxxxxxxxxxxxx1
 
-DINGDING_TOKEN3=xxxxxxxxxxxx3
-DINGDING_SECRET3=xxxxx3
+#DINGDING_TOKEN2=xxxxxxxxxxxxxxxxxxxxxxx2
+#DINGDING_SECRET2=xxxxxxxxxxxxxxxxxxxxxxx2
 
-DINGDING_TOKEN4=xxxxxxxxxxxx4
-DINGDING_SECRET4=xxxxx4
+#DINGDING_TOKEN3=xxxxxxxxxxxxxxxxxxxxxxx3
+#DINGDING_SECRET3=xxxxxxxxxxxxxxxxxxxxxxx3
+
+#DINGDING_TOKEN4=xxxxxxxxxxxxxxxxxxxxxxx4
+#DINGDING_SECRET4=xxxxxxxxxxxxxxxxxxxxxxx4
 
 ```
 
-注意：DINGDING_SECRET不是非必须项，只有机器人安全设置为加签才需要设置这个值，否则只需要设置DINGDING_TOKEN
+**注意**：DINGDING_SECRET不是必须项，只有机器人安全设置为加签才需要设置DINGDING_SECRET值。
 
-## Demo
+## 三、使用
 
-共有5个机器人access_token，可发到5个不同群
+发送到默认机器人
 
 ```
-//默认发给R0
  $dingDing = new DingDing();
  $dingDing->pushText('hello world!');
- 
-//发给rebot1
+```
+
+发送到指定机器人
+
+ ```
+//发给robot1
 $dingDing->pushText('hello world!'，DingDingRobot::R1);
+
+//发给robot2
 $dingDing->pushText('hello world!'，DingDingRobot::R2);
+
+//发给robot3
 $dingDing->pushText('hello world!'，DingDingRobot::R3);
+
+//发给robot4
 $dingDing->pushText('hello world!'，DingDingRobot::R4);
 ```
 
-## 升级注意事项
+## 四、升级注意事项
 
-如果你之前是1.0.5版本，升级到1.0.6版本后需要更新配置文件，提前备份好`config/dingding.php`文件，执行下面命令：
+### 1.0.6
 
+如果之前是1.0.5版本，升级到1.0.6版本需要更新配置文件，提前备份好`config/dingding.php`文件，执行下面命令：
 `php artisan vendor:publish --provider="PatPat\DingDing\DingDingServiceProvider" --force`
-
-完成！
 
 
 
